@@ -1,4 +1,6 @@
 import { postBateaux } from '../main';
+import {handleMouseClick, handleMouseLeave, handleMouseOver, placerBateaux} from "./placerBateaux";
+import {handleEnnemiMouseLeave, handleEnnemiMouseOver} from "./ennemi";
 
 
 postBateaux();
@@ -6,6 +8,7 @@ function creerPlateau(id, estEnnemi = false) {
   const lettres = "ABCDEFGHIJ".split("");
   const board = document.getElementById(id);
   board.innerHTML = "";
+  let cellId = 0;
   for (let row = 0; row <= 10; row++) {
     for (let col = 0; col <= 10; col++) {
       const cell = document.createElement("div");
@@ -16,12 +19,18 @@ function creerPlateau(id, estEnnemi = false) {
         cell.textContent = lettres[row - 1];
       } else if (row === 0) {
         cell.textContent = col;
-      } else if (!estEnnemi && Math.random() < 0.2) {
-        cell.classList.add("ship");
-      } else if (estEnnemi && Math.random() < 0.1) {
-        cell.classList.add("hit");
-      } else if (estEnnemi && Math.random() < 0.2) {
-        cell.classList.add("miss");
+      } else if (!estEnnemi) {
+        cell.id = "cell" + cellId;
+        cell.addEventListener("mouseover", handleMouseOver);
+        cell.addEventListener("mouseleave", handleMouseLeave);
+        cell.addEventListener("click", handleMouseClick);
+
+        cellId++;
+      } else if (estEnnemi) {
+        cell.id = "ennemi" + cellId;
+        cell.classList.add("ennemiCell");
+
+        cellId++;
       }
       board.appendChild(cell);
     }
@@ -37,4 +46,5 @@ function afficherNomsDepuisSession() {
 
 creerPlateau("board-player", false);
 creerPlateau("board-enemy", true);
+placerBateaux();
 afficherNomsDepuisSession();
