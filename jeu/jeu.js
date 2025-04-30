@@ -21,6 +21,8 @@ function creerPlateau(id, estEnnemi = false) {
         cell.textContent = col;
       } else if (!estEnnemi) {
         cell.id = "cell" + cellId;
+        cell.classList.add("cell");
+
         cell.addEventListener("mouseover", handleMouseOver);
         cell.addEventListener("mouseleave", handleMouseLeave);
         cell.addEventListener("click", handleMouseClick);

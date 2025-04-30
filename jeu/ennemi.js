@@ -1,5 +1,7 @@
+import {instanceAxios, postBateaux} from "../main";
 
 let positionBateaux;
+let tourIA = false;
 export function startGame() {
     positionBateaux = JSON.parse(atob(sessionStorage.getItem("battleship"))).data;
 
@@ -14,33 +16,76 @@ export function startGame() {
 
 export function handleEnnemiMouseOver(e) {
     const target = e.target;
+    if (target.classList.contains("hit")) return;
     const couleur = "rgba(255, 255, 255, 0.5)";
     target.style.backgroundColor = couleur;
 }
 
 export function handleEnnemiMouseLeave(e) {
     const target = e.target;
+    if (target.classList.contains("hit")) return;
     const couleur = "#202020";
     target.style.backgroundColor = couleur;
 }
 
 export function handleEnnemiMouseClick(e) {
     const target = e.target;
+    if (tourIA) return;
+    console.log(target);
+    if (target.classList.contains("hit")) return;
     const couleur = detectHit(parseInt(target.id.slice(6)));
     target.style.backgroundColor = couleur;
+
+    tourIA = true;
+    postApiMissile();
+}
+
+function postApiMissile() {
+    const token = JSON.parse(sessionStorage.getItem("infos")).jetonIA;
+    instanceAxios.post(
+        '/battleship-ia/parties/1/missiles',
+        { adversaire:"BOBER" },
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        }
+
+    ).then((response) => missileTourIa(response.data))
+        .catch((error) => console.error(error));
+}
+
+function missileTourIa(response) {
+    const coords = response.data.coordonnee;
+
+    const cell = document.getElementById("cell" + convertPositionToId(coords));
+    if (cell.classList.contains("hit")) {
+        postApiMissile();
+    }
+    if (cell.classList.contains("place")) {
+        cell.style.backgroundColor = "red";
+    } else {
+        cell.style.backgroundColor = "white";
+    }
+    cell.classList.add("hit");
+
+    tourIA = false;
 }
 
 function detectHit(id) {
     const hitId = convertIdToPosition(id);
-    for (const pos of positionBateaux.bateaux) {
-        if (hitId === pos) {
-            console.log("hit " + hitId);
-            return "red";
+    for (let [type, listePos] of Object.entries(positionBateaux.bateaux)) {
+        for (const pos of listePos) {
+            if (hitId === pos) {
+                document.getElementById("ennemi" + id).classList.add("hit");
+                return "red";
+            }
         }
     }
-    console.log("hit " + hitId);
+    document.getElementById("ennemi" + id).classList.add("hit");
     return "white";
 }
+
 
 function convertIdToPosition(id) {
     let number = id % 10;
@@ -79,4 +124,43 @@ function convertIdToPosition(id) {
             break;
     }
     return letter + "-" + (number + 1);
+}
+
+function convertPositionToId(pos) {
+    const number = parseInt(pos.slice(2));
+    const letterInNumber = pos.slice(0, 1);
+    let letter;
+    switch (letterInNumber) {
+        case 'A':
+            letter = 0;
+            break;
+        case 'B':
+            letter = 1;
+            break;
+        case 'C':
+            letter = 2;
+            break;
+        case 'D':
+            letter = 3;
+            break;
+        case 'E':
+            letter = 4;
+            break;
+        case 'F':
+            letter = 5;
+            break;
+        case 'G':
+            letter = 6;
+            break;
+        case 'H':
+            letter = 7;
+            break;
+        case 'I':
+            letter = 8;
+            break;
+        case 'J':
+            letter = 9;
+            break;
+    }
+    return letter * 10 + number;
 }

@@ -29,7 +29,7 @@ export function placerBateaux() {
 export function handleMouseOver(e) {
     e.preventDefault();
     if (bateauSelectionne === null) return;
-    const couleurBateaux = "rgb(0, 255, 255, 0.5)";
+    const couleurBateaux = getCouleurBateaux() + "80";
     drawBoat(e, couleurBateaux);
 }
 
@@ -43,7 +43,7 @@ export function handleMouseLeave(e) {
 export function handleMouseClick(e) {
     e.preventDefault();
     if (bateauSelectionne === null) return;
-    const couleurBateaux = "cyan";
+    const couleurBateaux = getCouleurBateaux();
     drawBoat(e, couleurBateaux, true);
 
     if (bateauxPlace === 5) {
@@ -93,4 +93,19 @@ function insideBoat(targetId) {
         return true;
     }
     return false;
+}
+
+function getCouleurBateaux() {
+    switch (bateauSelectionne.id) {
+        case "porte-avions":
+            return "#8b008b"; // purple
+        case "cuirasse":
+            return "#00ffff"; // cyan
+        case "destroyer":
+            return "#ffa500"; // orange
+        case "sous-marin":
+            return "#0000ff"; // blue
+        case "patrouilleur":
+            return "#228b22"; // green
+    }
 }
