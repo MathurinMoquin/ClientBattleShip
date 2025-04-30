@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BattleShip - Mathurin et François</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="jeu.css">
+
+  <script type="module" src="/jeu/jeu.js" defer></script>
+</head>
+<body>
+  <a href="/" class="btn btn-light back-button">⬅ Retour</a>
+  <div class="info-bar-container">
+    <div class="info-bar" id="info-bar-content"></div>
+  </div>
+  <div class="wrapper">
+    <div class="boards">
+      <div class="dock">Zone de<br>déploiement</div>
+      <div class="zone">
+        <div class="side-title">Votre plateau</div>
+        <div id="board-player" class="board"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="zone">
+        <div class="side-title">Plateau de l'ennemi</div>
+        <div id="board-enemy" class="board"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
