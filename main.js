@@ -6,9 +6,7 @@ const token = infos.jetonIA || "";
 
 const url = infos.URL || "";
 
-console.log("MAIN");
-
-const instanceAxios = axios.create({
+export const instanceAxios = axios.create({
     baseURL: "http://localhost:80",
     params: { adversaire: "NOM" },
     headers: {
@@ -25,9 +23,8 @@ export function obtenirInfosJoueur() {
 }
 
 export async function postBateaux() {
-  
     instanceAxios.post(
-        '/api/battleship-ia/parties',
+        '/battleship-ia/parties',
         { adversaire:"BOBER" },
         {
             headers: {

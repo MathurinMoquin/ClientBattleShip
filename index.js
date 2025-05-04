@@ -20,5 +20,5 @@ document.getElementById("formulaire").addEventListener("submit", function(evenem
 
 
     enregistrerInfosJoueur(infos);
-    window.location.href = "jeu/jeu.html";
+    window.location.href = "jeu/jeu1.html";
 });
