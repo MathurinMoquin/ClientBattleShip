@@ -1,0 +1,137 @@
+* {
+    color: white;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    background: #303030;
+}
+
+.barre-noms {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    min-height: 90px;
+}
+
+#retour {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 20px 40px;
+    color: black;
+    background-color: white;
+    border-radius: 12px;
+    border: 1px solid black;
+    font-size: 30px;
+}
+
+img {
+    border-radius: 15px;
+    border: 1px solid white;
+    padding: 10px;
+    background-color: orange;
+}
+
+#noms {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    max-width: 1000px;
+
+    padding: 20px;
+    background-color: #181818;
+    border-radius: 12px;
+    border: 1px solid gray;
+    box-shadow: -1px -1px 10px 10px #222222;
+}
+
+#noms span {
+    margin-left: 50px;
+}
+
+.game-board {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.plateau {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 715px;
+    max-height: 715px;
+}
+
+.nom-plateau {
+    font-size: 30px;
+    padding: 20px;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    width: 60px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 6px;
+    background-color: #202020;
+}
+
+.zone {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #181818;
+    border-radius: 12px;
+    border: 1px solid gray;
+    padding: 10px 10px 25px;
+    margin: 10px;
+    box-shadow: -1px -1px 10px 10px #222222;
+}
+
+.deploiement {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    border: 2px dashed white;
+    min-width: 10%;
+}
+
+.plateau-jeu-droite {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.important {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 1765px) {
+    .deploiement {
+        max-height: 714px;
+        display: flex;
+        flex-direction: column;
+        border: 2px dashed white;
+        position: sticky;
+        top: 70px;
+    }
+
+    .plateau-jeu-droite {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+}

@@ -1,6 +1,5 @@
 import { postBateaux } from '../main';
 import {handleMouseClick, handleMouseLeave, handleMouseOver, placerBateaux} from "./placerBateaux";
-import {handleEnnemiMouseLeave, handleEnnemiMouseOver} from "./ennemi";
 
 
 postBateaux();
@@ -43,10 +42,11 @@ function afficherNomsDepuisSession() {
   const data = JSON.parse(sessionStorage.getItem("infos"));
   const joueur = "👤 " + data?.nomJoueur || "👤 Joueur";
   const ia =   data?.nomIA + " 🤖" || "IA 🤖";
-  document.getElementById("info-bar-content").innerHTML = `<span>${joueur}</span><span>VS</span><span>${ia}</span>`;
+  document.getElementById("nom-joueur").textContent = joueur;
+  document.getElementById("nom-ia").textContent = ia;
 }
 
-creerPlateau("board-player", false);
-creerPlateau("board-enemy", true);
+creerPlateau("plateau-joueur", false);
+creerPlateau("plateau-ennemi", true);
 placerBateaux();
 afficherNomsDepuisSession();

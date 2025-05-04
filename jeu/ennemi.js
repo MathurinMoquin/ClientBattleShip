@@ -2,6 +2,13 @@ import {instanceAxios, postBateaux} from "../main";
 
 let positionBateaux;
 let tourIA = false;
+const posBateaux = {
+    'porte-avions': false,
+    'cuirasse': false,
+    'destroyer': false,
+    'sous-marin': false,
+    'patrouilleur': false,
+}
 export function startGame() {
     positionBateaux = JSON.parse(atob(sessionStorage.getItem("battleship"))).data;
 
@@ -31,12 +38,11 @@ export function handleEnnemiMouseLeave(e) {
 export function handleEnnemiMouseClick(e) {
     const target = e.target;
     if (tourIA) return;
-    console.log(target);
     if (target.classList.contains("hit")) return;
+    tourIA = true;
     const couleur = detectHit(parseInt(target.id.slice(6)));
     target.style.backgroundColor = couleur;
 
-    tourIA = true;
     postApiMissile();
 }
 
@@ -57,19 +63,66 @@ function postApiMissile() {
 
 function missileTourIa(response) {
     const coords = response.data.coordonnee;
+    let isHit = false;
 
     const cell = document.getElementById("cell" + convertPositionToId(coords));
+    if (cell === null) {
+        console.log(coords);
+        console.log(convertPositionToId(coords));
+        return;
+    }
     if (cell.classList.contains("hit")) {
         postApiMissile();
+        return;
     }
     if (cell.classList.contains("place")) {
         cell.style.backgroundColor = "red";
+        regarderToutBateau();
+        isHit = true;
     } else {
         cell.style.backgroundColor = "white";
+        isHit = false;
     }
     cell.classList.add("hit");
 
+    const token = JSON.parse(sessionStorage.getItem("infos")).jetonIA;
+    let result = isHit ? getResultat() : 0;
+    instanceAxios.put(
+        "/battleship-ia/parties/1/missiles/" + coords,
+        { resultat: result },
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        }
+    ).then((response) => console.log("Resultat: " + result))
+        .catch((error) => console.error(error));
+
     tourIA = false;
+}
+
+function getResultat() {
+    // let id = 2;
+    // for (let [type, result] of Object.entries(posBateaux)) {
+    //     if (result) {
+    //         return id;
+    //     }
+    //     id++;
+    // }
+    return 1;
+}
+
+function regarderToutBateau() {
+    const pos = JSON.parse(sessionStorage.getItem("bateaux"));
+    for (let [type, listePos] of Object.entries(pos)) {
+        let cont = false;
+        for (const p of listePos) {
+            if (document.getElementById("cell" + p).classList.contains('hit')) {
+                document.getElementById("cell" + p).classList.remove(type);
+            }
+        }
+        posBateaux[type] = document.getElementsByClassName(type).length === 0;
+    }
 }
 
 function detectHit(id) {
@@ -87,7 +140,7 @@ function detectHit(id) {
 }
 
 
-function convertIdToPosition(id) {
+export function convertIdToPosition(id) {
     let number = id % 10;
     let letterInNumber = Math.floor(id / 10);
     let letter;
@@ -122,11 +175,14 @@ function convertIdToPosition(id) {
         case 9:
             letter = 'J';
             break;
+        default:
+            letter = '';
+            break;
     }
     return letter + "-" + (number + 1);
 }
 
-function convertPositionToId(pos) {
+export function convertPositionToId(pos) {
     const number = parseInt(pos.slice(2));
     const letterInNumber = pos.slice(0, 1);
     let letter;
@@ -161,6 +217,9 @@ function convertPositionToId(pos) {
         case 'J':
             letter = 9;
             break;
+        default:
+            letter = '';
+            break;
     }
-    return letter * 10 + number;
+    return letter * 10 + number - 1;
 }

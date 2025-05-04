@@ -6,8 +6,6 @@ const token = infos.jetonIA || "";
 
 const url = infos.URL || "";
 
-console.log("MAIN");
-
 export const instanceAxios = axios.create({
     baseURL: "http://localhost:80",
     params: { adversaire: "NOM" },

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BattleShip - Mathurin et François</title>
+    <link rel="stylesheet" href="jeu1.css">
+
+    <script type="module" src="/jeu/jeu.js" defer></script>
+</head>
+<body>
+<a href="/" id="retour">⬅ Retour</a>
+<div class="barre-noms">
+    <div class="" id="noms">
+        <span id="nom-joueur"></span><span>VS</span><span id="nom-ia"></span>
+    </div>
+</div>
+<div class="game-board">
+    <div class="zone deploiement">
+        <div class="important">Zone de<br>déploiement</div>
+        <img src="" class="deplacable bateau" alt="porte-avions" id="porte-avions">
+        <img src="" class="deplacable bateau" alt="cuirasse" id="cuirasse">
+        <img src="" class="deplacable bateau" alt="destroyer" id="destroyer">
+        <img src="" class="deplacable bateau" alt="sous-marin" id="sous-marin">
+        <img src="" class="deplacable bateau" alt="patrouilleur" id="patrouilleur">
+        <div class="important">(r pour <br>changer la <br>rotation)</div>
+    </div>
+    <div class="plateau-jeu-droite">
+        <div class="zone">
+            <div class="nom-plateau">Votre plateau</div>
+            <div id="plateau-joueur" class="plateau"></div>
+        </div>
+        <div class=""></div>
+        <div class="zone">
+            <div class="nom-plateau">Plateau de l'ennemi</div>
+            <div id="plateau-ennemi" class="plateau"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
