@@ -46,7 +46,7 @@ function afficherNomsDepuisSession() {
   document.getElementById("nom-ia").textContent = ia;
 }
 
-const partieId = JSON.parse(btoa(sessionStorage.getItem("battleship"))).data.id;
+const partieId = JSON.parse(atob(sessionStorage.getItem("battleship"))).data.id;
 document.getElementById("retour").addEventListener("click", function () {
   const token = JSON.parse(sessionStorage.getItem("infos")).jetonIA;
   instanceAxios.delete(

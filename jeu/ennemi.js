@@ -1,6 +1,6 @@
 import { instanceAxios } from "../main";
 
-const partieId = JSON.parse(btoa(sessionStorage.getItem("battleship"))).data.id;
+const partieId = JSON.parse(atob(sessionStorage.getItem("battleship"))).data.id;
 
 let positionBateaux;
 let tourIA = false;
