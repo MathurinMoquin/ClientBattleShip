@@ -1,5 +1,7 @@
 import { instanceAxios } from "../main";
 
+const partieId = JSON.parse(btoa(sessionStorage.getItem("battleship"))).data.id;
+
 let positionBateaux;
 let tourIA = false;
 
@@ -19,6 +21,14 @@ const posBateauxFini = {
     'patrouilleur': false,
 }
 
+const bateauRestant = {
+    'porte-avions': false,
+    'cuirasse': false,
+    'destroyer': false,
+    'sous-marin': false,
+    'patrouilleur': false,
+}
+
 export function startGame() {
     alert("La partie commence");
     positionBateaux = JSON.parse(atob(sessionStorage.getItem("battleship"))).data;
@@ -28,7 +38,13 @@ export function startGame() {
     for (const cell of cells) {
         cell.addEventListener("mouseover", handleEnnemiMouseOver);
         cell.addEventListener("mouseleave", handleEnnemiMouseLeave);
-        cell.addEventListener("click", handleEnnemiMouseClick)
+        cell.addEventListener("click", handleEnnemiMouseClick);
+    }
+
+    for (let [type, listePos] of Object.entries(positionBateaux.bateaux)) {
+        for (const pos of listePos) {
+            document.getElementById("ennemi" + convertPositionToId(pos)).classList.add(type);
+        }
     }
 }
 
@@ -54,15 +70,13 @@ export function handleEnnemiMouseClick(e) {
     const couleur = detectHit(parseInt(target.id.slice(6)));
     target.style.backgroundColor = couleur;
 
-    detectBoatHit(parseInt(e.target.id.slice(6)));
-
     postApiMissile();
 }
 
 function postApiMissile() {
     const token = JSON.parse(sessionStorage.getItem("infos")).jetonIA;
     instanceAxios.post(
-        '/battleship-ia/parties/1/missiles',
+        `/battleship-ia/parties/${partieId}/missiles`,
         { adversaire:"BOBER" },
         {
             headers: {
@@ -102,7 +116,7 @@ function missileTourIa(response) {
     const token = JSON.parse(sessionStorage.getItem("infos")).jetonIA;
     let result = isHit ? getResultat() : 0;
     instanceAxios.put(
-        "/battleship-ia/parties/1/missiles/" + coords,
+        `/battleship-ia/parties/${partieId}/missiles` + coords,
         { resultat: result },
         {
             headers: {
@@ -147,6 +161,7 @@ function detectHit(id) {
             if (hitId === pos) {
                 document.getElementById("ennemi" + id).classList.add("hit");
                 document.getElementById("ennemi" + id).classList.add(type);
+                detectBoatHit(parseInt(id));
                 return "red";
             }
         }
@@ -158,14 +173,18 @@ function detectHit(id) {
 function detectBoatHit(id) {
     const posBateauxEnnemi = JSON.parse(atob(sessionStorage.getItem("battleship"))).data.bateaux;
     for (let [type, listePos] of Object.entries(posBateauxEnnemi)) {
+        if (!document.getElementById("ennemi" + id).classList.contains(type)) return;
+        if (bateauRestant[type]) continue;
         for (const pos of listePos) {
-            console.log(pos);
-            console.log(document.getElementById("ennemi" + convertPositionToId(id)));
-            if (document.getElementById("ennemi" + convertPositionToId(id)).classList.contains(type)) {
+            const ennemi = document.getElementById("ennemi" + convertPositionToId(pos));
+            if (ennemi.classList.contains(type)) {
+                ennemi.classList.remove(type);
                 return;
             }
         }
+        console.log("Bateau coulé: " + type);
         alert("Bateau coulé: " + type);
+        bateauRestant[type] = true;
     }
 }
 
