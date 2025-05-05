@@ -54,6 +54,8 @@ export function handleEnnemiMouseClick(e) {
     const couleur = detectHit(parseInt(target.id.slice(6)));
     target.style.backgroundColor = couleur;
 
+    detectBoatHit(parseInt(e.target.id.slice(6)));
+
     postApiMissile();
 }
 
@@ -144,12 +146,27 @@ function detectHit(id) {
         for (const pos of listePos) {
             if (hitId === pos) {
                 document.getElementById("ennemi" + id).classList.add("hit");
+                document.getElementById("ennemi" + id).classList.add(type);
                 return "red";
             }
         }
     }
     document.getElementById("ennemi" + id).classList.add("hit");
     return "white";
+}
+
+function detectBoatHit(id) {
+    const posBateauxEnnemi = JSON.parse(atob(sessionStorage.getItem("battleship"))).data.bateaux;
+    for (let [type, listePos] of Object.entries(posBateauxEnnemi)) {
+        for (const pos of listePos) {
+            console.log(pos);
+            console.log(document.getElementById("ennemi" + convertPositionToId(id)));
+            if (document.getElementById("ennemi" + convertPositionToId(id)).classList.contains(type)) {
+                return;
+            }
+        }
+        alert("Bateau coulé: " + type);
+    }
 }
 
 
