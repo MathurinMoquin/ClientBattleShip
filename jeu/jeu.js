@@ -1,4 +1,4 @@
-import { postBateaux } from '../main';
+import {instanceAxios, postBateaux} from '../main';
 import {handleMouseClick, handleMouseLeave, handleMouseOver, placerBateaux} from "./placerBateaux";
 
 
@@ -46,6 +46,20 @@ function afficherNomsDepuisSession() {
   document.getElementById("nom-ia").textContent = ia;
 }
 
+const partieId = JSON.parse(atob(sessionStorage.getItem("battleship"))).data.id;
+document.getElementById("retour").addEventListener("click", function () {
+  const token = JSON.parse(sessionStorage.getItem("infos")).jetonIA;
+  instanceAxios.delete(
+      `/battleship-ia/parties/${partieId}/`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }
+
+  ).then((response) => console.log(response))
+      .catch((error) => console.error(error));
+});
 creerPlateau("plateau-joueur", false);
 creerPlateau("plateau-ennemi", true);
 placerBateaux();
