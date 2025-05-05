@@ -176,14 +176,29 @@ function insideBoat(targetId, firstTarget) {
 function getCouleurBateaux() {
     switch (bateauSelectionne.id) {
         case "porte-avions":
-            return "#8b008b"; // purple
+            return "#6b008b"; // purple
         case "cuirasse":
-            return "#00ffff"; // cyan
+            return "#0088aa"; // cyan
         case "destroyer":
-            return "#ffa500"; // orange
+            return "#aa6500"; // orange
         case "sous-marin":
-            return "#0000ff"; // blue
+            return "#000066"; // blue
         case "patrouilleur":
-            return "#228b22"; // green
+            return "#224b22"; // green
     }
 }
+
+// function getCouleurBateaux() {
+//     switch (bateauSelectionne.id) {
+//         case "porte-avions":
+//             return "#8b008b"; // purple
+//         case "cuirasse":
+//             return "#00ffff"; // cyan
+//         case "destroyer":
+//             return "#ffa500"; // orange
+//         case "sous-marin":
+//             return "#0000ff"; // blue
+//         case "patrouilleur":
+//             return "#228b22"; // green
+//     }
+// }

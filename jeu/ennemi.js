@@ -1,7 +1,8 @@
-import {instanceAxios, postBateaux} from "../main";
+import { instanceAxios } from "../main";
 
 let positionBateaux;
 let tourIA = false;
+
 const posBateaux = {
     'porte-avions': false,
     'cuirasse': false,
@@ -9,7 +10,17 @@ const posBateaux = {
     'sous-marin': false,
     'patrouilleur': false,
 }
+
+const posBateauxFini = {
+    'porte-avions': false,
+    'cuirasse': false,
+    'destroyer': false,
+    'sous-marin': false,
+    'patrouilleur': false,
+}
+
 export function startGame() {
+    alert("La partie commence");
     positionBateaux = JSON.parse(atob(sessionStorage.getItem("battleship"))).data;
 
     const cells = document.getElementsByClassName("ennemiCell");
@@ -77,13 +88,14 @@ function missileTourIa(response) {
     }
     if (cell.classList.contains("place")) {
         cell.style.backgroundColor = "red";
-        regarderToutBateau();
         isHit = true;
     } else {
         cell.style.backgroundColor = "white";
         isHit = false;
     }
     cell.classList.add("hit");
+
+    regarderToutBateau();
 
     const token = JSON.parse(sessionStorage.getItem("infos")).jetonIA;
     let result = isHit ? getResultat() : 0;
@@ -102,13 +114,14 @@ function missileTourIa(response) {
 }
 
 function getResultat() {
-    // let id = 2;
-    // for (let [type, result] of Object.entries(posBateaux)) {
-    //     if (result) {
-    //         return id;
-    //     }
-    //     id++;
-    // }
+    let id = 2;
+    for (let [type, result] of Object.entries(posBateaux)) {
+        if (!posBateauxFini[type] && result) {
+            posBateauxFini[type] = true;
+            return id;
+        }
+        id++;
+    }
     return 1;
 }
 
