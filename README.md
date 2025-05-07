@@ -17,10 +17,10 @@
   `./vendor/bin/sail up -d`
 
 * **Avoir un token**
-  `./vendor/bin/sail artisan migrate`
-  `./vendor/bin/sail artisan migrate --seed`
-  `./vendor/bin/sail artisan tinker`
-  `\App\Models\User::find(1)->createToken('nom-du-token')->plainTextToken`
+* `./vendor/bin/sail artisan migrate`
+* `./vendor/bin/sail artisan migrate --seed`
+* `./vendor/bin/sail artisan tinker`
+* `\App\Models\User::find(1)->createToken('nom-du-token')->plainTextToken`
 
 **Démarrer le client**
 ----
