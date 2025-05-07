@@ -19,3 +19,9 @@
     composer install --ignore-platform-reqs`
   
   `composer install`
+
+* **Démarrer l'API**
+  `./vendor/bin/sail up -d`
+
+* **Avoir un token**
+  `\App\Models\User::find(1)->createToken('nom-du-token')->plainTextToken`
